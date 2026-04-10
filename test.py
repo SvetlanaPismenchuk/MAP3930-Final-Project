@@ -31,13 +31,24 @@ def integration_test():
 def root_test():
     """Tests for the numerical root-finding module."""
     
-    pass
+    # Define a test polynomial and its derivative
+    f = lambda x: -x**3 + 6*x**2 - 9*x + 7
+    fprime = lambda x: -3*x**2 + 12*x - 9
     
-    ### Tests for bisection
+    ### Test the root-finding function for applying the bisection method on the
+    ### search interval [4,5] with an error tolerance of 1e-10.
     
-    ### Tests for Newton
+    ### Test the error-handling of the bisection method by repeating the test
+    ### on the search interval [2,4].
     
-    ### Tests for Secant
+    ### Test the root-finding function for applying Newton's method with an
+    ### initial guess of 4 with an error tolerance of 1e-10.
+    
+    ### Test the error-handling of Newton's method by repeating the test with
+    ### an initial guess of 3.
+    
+    ### Test the root-finding function for applying the secant method with an
+    ### initial guess of 4 with an error tolerance of 1e-10.
 
 #------------------------------------------------------------------------------
 
