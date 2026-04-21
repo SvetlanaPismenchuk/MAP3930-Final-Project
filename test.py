@@ -15,9 +15,9 @@ import matplotlib.pyplot as plt
 
 from Calculus.Differentiate import diff
 from Calculus.Integrate import integ
-#from Linear_Algebra.Linear_System_Solver import linear_system_solve
+from Linear_Algebra.Linear_System_Solver import linear_system_solve
 #from Regression_and_Interpolation.polynomial_fit import PolynomialFit, linear_regression, polynomial_regression
-#from Root_Finding.Root import find_root
+from Root_Finding.Root import find_root
 
 
 def test_differentiate():
@@ -87,10 +87,12 @@ def test_linear_system_solver():
 
     A1 = [[2, 1], [1, 3]]
     b1 = [5, 6]
+    # Expected solution: [1.8, 1.4]
     print("Square system solution:", linear_system_solve(A1, b1))
 
     A2 = [[1, 1], [1, 2], [1, 3]]
     b2 = [1, 2, 2]
+    # Expected solution: [0.667, 0.5]
     print("Least squares solution:", linear_system_solve(A2, b2))
 
     print()
@@ -150,10 +152,10 @@ def test_root_finding():
 
 def run_all_tests():
     #test_differentiate()
-    test_integrate()
+    #test_integrate()
     #test_linear_system_solver()
     #test_regression_interpolation()
-    #test_root_finding()
+    test_root_finding()
     print("All tests completed.")
 
 
