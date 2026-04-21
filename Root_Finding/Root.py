@@ -14,36 +14,16 @@ appropriate method based on the user's arguments.
 def _bisection(f, a, b, tol=1e-6, max_iter=100):
     """
     Approximate a root of a function using the bisection method.
-
-    Parameters
-    ----------
-    f : callable
-        Function whose root is being approximated.
-    a : float
-        Left endpoint of the interval.
-    b : float
-        Right endpoint of the interval.
-    tol : float, optional
-        Error tolerance used as a stopping condition.
-    max_iter : int, optional
-        Maximum number of iterations allowed.
-
-    Returns
-    -------
-    float
-        Approximate root of the function.
-
-    Raises
-    ------
-    ValueError
-        If f(a) and f(b) do not have opposite signs.
     """
+    if a > b:
+        a, b = b, a
+
     fa = f(a)
     fb = f(b)
 
-    if fa == 0:
+    if abs(fa) < tol:
         return a
-    if fb == 0:
+    if abs(fb) < tol:
         return b
 
     if fa * fb > 0:
@@ -69,29 +49,6 @@ def _bisection(f, a, b, tol=1e-6, max_iter=100):
 def _newton(f, df, x0, tol=1e-6, max_iter=100):
     """
     Approximate a root of a function using Newton's method.
-
-    Parameters
-    ----------
-    f : callable
-        Function whose root is being approximated.
-    df : callable
-        Derivative of the function f.
-    x0 : float
-        Initial guess for the root.
-    tol : float, optional
-        Error tolerance used as a stopping condition.
-    max_iter : int, optional
-        Maximum number of iterations allowed.
-
-    Returns
-    -------
-    float
-        Approximate root of the function.
-
-    Raises
-    ------
-    ZeroDivisionError
-        If the derivative is zero during an iteration.
     """
     x = x0
 
@@ -102,8 +59,8 @@ def _newton(f, df, x0, tol=1e-6, max_iter=100):
         if abs(fx) < tol:
             return x
 
-        if dfx == 0:
-            raise ZeroDivisionError("Newton's method failed because derivative is zero.")
+        if abs(dfx) < 1e-14:
+            raise ZeroDivisionError("Newton's method failed because derivative is zero or too close to zero.")
 
         x_new = x - fx / dfx
 
@@ -118,29 +75,6 @@ def _newton(f, df, x0, tol=1e-6, max_iter=100):
 def _secant(f, x0, x1, tol=1e-6, max_iter=100):
     """
     Approximate a root of a function using the secant method.
-
-    Parameters
-    ----------
-    f : callable
-        Function whose root is being approximated.
-    x0 : float
-        First initial guess.
-    x1 : float
-        Second initial guess.
-    tol : float, optional
-        Error tolerance used as a stopping condition.
-    max_iter : int, optional
-        Maximum number of iterations allowed.
-
-    Returns
-    -------
-    float
-        Approximate root of the function.
-
-    Raises
-    ------
-    ZeroDivisionError
-        If f(x1) - f(x0) is zero during an iteration.
     """
     for _ in range(max_iter):
         f0 = f(x0)
@@ -149,8 +83,8 @@ def _secant(f, x0, x1, tol=1e-6, max_iter=100):
         if abs(f1) < tol:
             return x1
 
-        if f1 - f0 == 0:
-            raise ZeroDivisionError("Secant method failed because denominator became zero.")
+        if abs(f1 - f0) < 1e-14:
+            raise ZeroDivisionError("Secant method failed because denominator became zero or too close to zero.")
 
         x2 = x1 - f1 * (x1 - x0) / (f1 - f0)
 
@@ -171,47 +105,36 @@ def find_root(f, *args, tol=1e-6, max_iter=100):
     1. Bisection:
        find_root(f, a, b, tol=..., max_iter=...)
 
-    2. Secant:
+    2. Secant with one initial guess:
        find_root(f, x0, tol=..., max_iter=...)
 
-       Uses x0 and x0 + 1e-4 as two starting guesses.
+    3. Secant with two initial guesses:
+       find_root(f, x0, x1, "secant", tol=..., max_iter=...)
 
-    3. Newton:
+    4. Newton:
        find_root(f, df, x0, tol=..., max_iter=...)
-
-    Parameters
-    ----------
-    f : callable
-        Function whose root is being approximated.
-    *args
-        Extra arguments that determine which method is used.
-    tol : float, optional
-        Error tolerance.
-    max_iter : int, optional
-        Maximum number of iterations.
-
-    Returns
-    -------
-    float
-        Approximate root of the function.
-
-    Raises
-    ------
-    ValueError
-        If the arguments do not match a supported usage.
     """
+    if not callable(f):
+        raise TypeError("f must be callable")
+
+    if tol <= 0:
+        raise ValueError("tol must be positive")
+
+    if max_iter <= 0:
+        raise ValueError("max_iter must be a positive integer")
+
     if len(args) == 2 and callable(args[0]):
         # Newton's method: find_root(f, df, x0)
         df, x0 = args
         return _newton(f, df, x0, tol=tol, max_iter=max_iter)
 
-    elif len(args) == 2:
+    elif len(args) == 2 and not callable(args[0]):
         # Bisection method: find_root(f, a, b)
         a, b = args
         return _bisection(f, a, b, tol=tol, max_iter=max_iter)
 
     elif len(args) == 1:
-        # Secant method: find_root(f, x0)
+        # Secant method with one initial guess: find_root(f, x0)
         x0 = args[0]
         x1 = x0 + 1e-4
         return _secant(f, x0, x1, tol=tol, max_iter=max_iter)
