@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 
 from Calculus.Differentiate import diff
 from Calculus.Integrate import integ
-#from Linear_Algebra.Linear_System_Solver import linear_system_solve
-#from Regression_and_Interpolation.polynomial_fit import PolynomialFit, linear_regression, polynomial_regression
+from Linear_Algebra.Linear_System_Solver import linear_system_solve
+from Regression_and_Interpolation.polynomial_fit import PolynomialFit, linear_regression, polynomial_regression
 from Root_Finding.Root import find_root
 
 
@@ -101,25 +101,28 @@ def test_linear_system_solver():
 def test_regression_interpolation():
     print("----- Testing RegressionInterpolation.py -----")
 
-    data = [(0, 1), (1, 3), (2, 5), (3, 7)]
+    data = [(0.9,3.5), (1.4,2.4), (2.4,2.3), (3.1,1.4), (4.6,2.7), (6.3,4.5)]
     model = PolynomialFit(data)
 
     coeffs_linear = model.linear_regression()
     print("Linear regression coefficients:", coeffs_linear)
     print("Linear regression polynomial:", model.polynomial_string())
     print("Evaluate at x=4:", model.evaluate(4))
+    model.plot()
 
-    data2 = [(0, 1), (1, 2), (2, 5)]
-    model2 = PolynomialFit(data2)
+    model2 = PolynomialFit(data)
     coeffs_poly = model2.polynomial_regression(2)
     print("Polynomial regression coefficients:", coeffs_poly)
     print("Polynomial regression polynomial:", model2.polynomial_string())
     print("Evaluate at x=3:", model2.evaluate(3))
+    model2.plot()
 
+    data2 = [(0, 1), (1, 2), (2, 5)]
     model3 = PolynomialFit(data2)
     coeffs_interp = model3.polynomial_interpolation()
     print("Interpolation coefficients:", coeffs_interp)
     print("Interpolation polynomial:", model3.polynomial_string())
+    model3.plot()
 
     x = [0, 1, 2, 3]
     y = [1, 3, 5, 7]
@@ -154,10 +157,10 @@ def test_root_finding():
 
 
 def run_all_tests():
-    #test_differentiate()
-    #test_integrate()
-    #test_linear_system_solver()
-    #test_regression_interpolation()
+    test_differentiate()
+    test_integrate()
+    test_linear_system_solver()
+    test_regression_interpolation()
     test_root_finding()
     print("All tests completed.")
 
