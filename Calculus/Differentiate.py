@@ -1,5 +1,5 @@
 """
-Differentate.py
+Differentiate.py
 
 This file contains numerical differentiation functions.
 
@@ -38,9 +38,15 @@ def _diff_list(data):
 
     data = [(x0, y0), (x1, y1), ..., (xn, yn)]
 
-    Returns a list of ordered pairs:
-    [(x0, y0'), (x1, y1'), ..., (xn, yn')]
+    Returns:
+    [(x0, y0_prime), (x1, y1_prime), ..., (xn, yn_prime)]
     """
+    if not isinstance(data, list):
+        raise TypeError("data must be a list of ordered pairs")
+
+    if len(data) < 2:
+        raise ValueError("data must contain at least two points")
+
     result = []
     n = len(data)
 
@@ -67,27 +73,33 @@ def _diff_list(data):
 
 def diff(f, x0=None, h=0.01, mode=0):
     """
+    Numerical differentiation.
+
     If f is a function:
         diff(f, x0, h=0.01, mode=0)
 
     If f is a list of ordered pairs:
         diff(data)
     """
-
     if isinstance(f, list):
         return _diff_list(f)
 
+    if not callable(f):
+        raise TypeError("f must be either a callable function or a list of ordered pairs")
+
+    if x0 is None:
+        raise ValueError("x0 must be provided when f is a function")
+
+    if h == 0:
+        raise ValueError("h must be nonzero")
+
     if mode == 0:
         return _forward_diff(f, x0, h)
-
     elif mode == 1:
         return _backward_diff(f, x0, h)
-
     elif mode == 2:
         return _central_diff(f, x0, h)
-
     elif mode == 3:
         return _five_point_diff(f, x0, h)
-
     else:
-        return "Please enter a number 0-3."
+        raise ValueError("mode must be 0, 1, 2, or 3")

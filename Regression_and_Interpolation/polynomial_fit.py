@@ -23,6 +23,9 @@ class PolynomialFit:
         data : list of tuple
             List of ordered pairs [(x1, y1), (x2, y2), ..., (xn, yn)].
         """
+        if not isinstance(data, list) or len(data) == 0:
+            raise ValueError("data must be a nonempty list of ordered pairs")
+
         self.raw_data = data
         self.coefficients = None
 
@@ -30,6 +33,9 @@ class PolynomialFit:
         """
         Fit a polynomial of a specified degree to the data using least squares.
         """
+        if degree < 0:
+            raise ValueError("degree must be nonnegative")
+
         x = np.array([point[0] for point in self.raw_data], dtype=float)
         y = np.array([point[1] for point in self.raw_data], dtype=float)
 
@@ -49,20 +55,70 @@ class PolynomialFit:
         x = np.array([point[0] for point in self.raw_data], dtype=float)
         y = np.array([point[1] for point in self.raw_data], dtype=float)
 
+        if len(set(x)) != len(x):
+            raise ValueError("x-values must be distinct for interpolation")
+
         degree = len(x) - 1
         self.coefficients = np.polyfit(x, y, degree)
         return self.coefficients
+
+    def get_coefficients(self):
+        """
+        Return the fitted polynomial coefficients.
+        """
+        if self.coefficients is None:
+            raise ValueError("No polynomial has been fit yet")
+
+        return self.coefficients
+
+    def polynomial_string(self):
+        """
+        Return the fitted polynomial as a readable string.
+        """
+        if self.coefficients is None:
+            raise ValueError("No polynomial has been fit yet")
+
+        terms = []
+        degree = len(self.coefficients) - 1
+
+        for i, coeff in enumerate(self.coefficients):
+            power = degree - i
+
+            if np.isclose(coeff, 0):
+                continue
+
+            coeff_str = f"{coeff:.6g}"
+
+            if power == 0:
+                terms.append(f"{coeff_str}")
+            elif power == 1:
+                terms.append(f"{coeff_str}x")
+            else:
+                terms.append(f"{coeff_str}x^{power}")
+
+        if not terms:
+            return "0"
+
+        poly = " + ".join(terms)
+        poly = poly.replace("+ -", "- ")
+        return poly
 
     def evaluate(self, x):
         """
         Evaluate the fitted polynomial at a given input value.
         """
+        if self.coefficients is None:
+            raise ValueError("No polynomial has been fit yet")
+
         return np.polyval(self.coefficients, x)
 
     def plot(self, **kwargs):
         """
         Plot the raw data together with the fitted regression or interpolation curve.
         """
+        if self.coefficients is None:
+            raise ValueError("No polynomial has been fit yet")
+
         x_data = np.array([point[0] for point in self.raw_data], dtype=float)
         y_data = np.array([point[1] for point in self.raw_data], dtype=float)
 
@@ -93,6 +149,9 @@ def linear_regression(x, y):
     """
     Compute the best-fit line for a set of data points.
     """
+    if len(x) != len(y):
+        raise ValueError("x and y must have the same length")
+
     data = list(zip(x, y))
     model = PolynomialFit(data)
     return model.linear_regression()
@@ -102,6 +161,9 @@ def polynomial_regression(x, y, degree):
     """
     Fit a polynomial of specified degree to a set of data points.
     """
+    if len(x) != len(y):
+        raise ValueError("x and y must have the same length")
+
     data = list(zip(x, y))
     model = PolynomialFit(data)
     return model.polynomial_regression(degree)
