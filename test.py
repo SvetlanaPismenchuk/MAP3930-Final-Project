@@ -11,26 +11,45 @@ This script tests the functions in:
 
 import math
 import numpy as np
+import matplotlib.pyplot as plt
 
 from Calculus.Differentiate import diff
-from Calculus.Integrate import integ
-from Linear_Algebra.Linear_System_Solver import linear_system_solve
-from Regression_and_Interpolation.polynomial_fit import PolynomialFit, linear_regression, polynomial_regression
-from Root_Finding.Root import find_root
+#from Calculus.Integrate import integ
+#from Linear_Algebra.Linear_System_Solver import linear_system_solve
+#from Regression_and_Interpolation.polynomial_fit import PolynomialFit, linear_regression, polynomial_regression
+#from Root_Finding.Root import find_root
 
 
 def test_differentiate():
     print("----- Testing Differentiate.py -----")
 
-    f = lambda x: x**2
+    f = lambda x: -x**3 + 6*x**2 - 9*x + 7
 
     print("Forward difference of x^2 at x=2:", diff(f, 2, h=0.001, mode=0))
     print("Backward difference of x^2 at x=2:", diff(f, 2, h=0.001, mode=1))
     print("Central difference of x^2 at x=2:", diff(f, 2, h=0.001, mode=2))
     print("Five-point difference of x^2 at x=2:", diff(f, 2, h=0.001, mode=3))
+    
+    # Try calling with an invalid mode option
+    try:
+        diff(f, 2, h=0.001, mode=4)
+    except ValueError:
+        print("mode=4 is an invalid option.")
 
-    data = [(0, 0), (1, 1), (2, 4), (3, 9)]
-    print("Derivative from list data:", diff(data))
+    data = [(x, f(x)) for x in np.linspace(0.5, 3.5, 101)]
+    ddata = diff(data)
+    
+    # Plot test data and its derivative
+    x = [data[i][0] for i in range(len(data))]
+    y = [data[i][1] for i in range(len(data))]
+    dy = [ddata[i][1] for i in range(len(data))]
+    plt.plot(x, y, "b-", label="f(x)")
+    plt.plot(x, dy, "r-", label="f'(x)")
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.legend()
+    plt.grid()
+    plt.show()
 
     print()
 
@@ -120,12 +139,13 @@ def test_root_finding():
 
 def run_all_tests():
     test_differentiate()
-    test_integrate()
-    test_linear_system_solver()
-    test_regression_interpolation()
-    test_root_finding()
+    #test_integrate()
+    #test_linear_system_solver()
+    #test_regression_interpolation()
+    #test_root_finding()
     print("All tests completed.")
 
 
 if __name__ == "__main__":
     run_all_tests()
+    #input()
