@@ -1,2 +1,2 @@
-from Calculus.Differentiate import diff
-from Calculus.Integrate import integ
+from .Differentiate import diff
+from .Integrate import integ

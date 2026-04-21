@@ -12,11 +12,11 @@ This script tests the functions in:
 import math
 import numpy as np
 
-from Differentiate import diff
-from integrate import integ
-from Linear_System_Solver import linear_system_solve
-from RegressionInterpolation import PolynomialFit, linear_regression, polynomial_regression
-from Root import find_root
+from Calculus.Differentiate import diff
+from Calculus.Integrate import integ
+from Linear_Algebra.Linear_System_Solver import linear_system_solve
+from Regression_and_Interpolation.polynomial_fit import PolynomialFit, linear_regression, polynomial_regression
+from Root_Finding.Root import find_root
 
 
 def test_differentiate():
