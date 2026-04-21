@@ -1,3 +1,13 @@
+
+import os
+import sys
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+
+
 """
 Test.py
 
@@ -13,11 +23,12 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-from Calculus.Differentiate import diff
-from Calculus.Integrate import integ
-from Linear_Algebra.Linear_System_Solver import linear_system_solve
-from Regression_and_Interpolation.polynomial_fit import PolynomialFit, linear_regression, polynomial_regression
-from Root_Finding.Root import find_root
+
+from Calculus import diff, integ
+from Linear_Algebra import linear_system_solve
+from Regression_and_Interpolation import PolynomialFit, linear_regression, polynomial_regression
+from Root_Finding import find_root
+
 
 
 def test_differentiate():
@@ -55,7 +66,7 @@ def test_differentiate():
     print()
 
 
-def test_integrate():
+def test_integrate(): #step size, low mult num
     print("----- Testing integrate.py -----")
 
     f = lambda x: -3*x**2 + 12*x - 9
@@ -132,7 +143,7 @@ def test_regression_interpolation():
     print()
 
 
-def test_root_finding():
+def test_root_finding(): # secant -> approx close to 0 -> throw zero division error
     print("----- Testing Root.py -----")
 
     # Define a test polynomial and its derivative
