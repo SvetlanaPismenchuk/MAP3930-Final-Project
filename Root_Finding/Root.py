@@ -128,6 +128,10 @@ def find_root(f, *args, tol=1e-6, max_iter=100):
         df, x0 = args
         return _newton(f, df, x0, tol=tol, max_iter=max_iter)
 
+    elif len(args) == 3 and args[2] == "secant":
+        x0, x1, method = args
+        return _secant(f, x0, x1, tol=tol, max_iter=max_iter)
+
     elif len(args) == 2 and not callable(args[0]):
         # Bisection method: find_root(f, a, b)
         a, b = args

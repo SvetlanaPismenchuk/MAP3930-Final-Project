@@ -11,19 +11,19 @@ Modes:
 """
 
 
-def _forward_diff(f, x0, h=0.01):
+def _forward_diff(f, x0, h=1e-5):
     return (f(x0 + h) - f(x0)) / h
 
 
-def _backward_diff(f, x0, h=0.01):
+def _backward_diff(f, x0, h=1e-5):
     return (f(x0) - f(x0 - h)) / h
 
 
-def _central_diff(f, x0, h=0.01):
+def _central_diff(f, x0, h=1e-5):
     return (f(x0 + h) - f(x0 - h)) / (2 * h)
 
 
-def _five_point_diff(f, x0, h=0.01):
+def _five_point_diff(f, x0, h=1e-5):
     return (
         f(x0 - 2 * h)
         - 8 * f(x0 - h)
@@ -71,7 +71,7 @@ def _diff_list(data):
     return result
 
 
-def diff(f, x0=None, h=0.01, mode=0):
+def diff(f, x0=None, h=1e-5, mode=0):
     """
     Numerical differentiation.
 
