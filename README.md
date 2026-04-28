@@ -23,7 +23,7 @@ This project is a Python numerical methods library that includes tools for diffe
 - [Integration](#integration)
 - [Linear System Solver](#linear-algebra)
 - [Regression and Interpolation](#regression-and-interpolation)
-- Root.py
+- [Root Finding] (#Root-Finding)
 - Test.py
 
 ---
@@ -275,11 +275,11 @@ print(find_root(f, df, 3))
 
 ## Testing
 
-The Test.py script is used to test all of the modules in the project.
+The test.py script is used to test all of the modules in the project.
 
 ## Run the test script
 ```python
-python Test.py
+python test.py
 ```
 
 ## Error Handling
