@@ -23,7 +23,7 @@ This project is a Python numerical methods library that includes tools for diffe
 - [Integration](#integration)
 - [Linear System Solver](#linear-algebra)
 - [Regression and Interpolation](#regression-and-interpolation)
-- [Root Finding](##Root-Finding)
+- [Root Finding](#Root-Finding)
 - Test.py
 
 ---
