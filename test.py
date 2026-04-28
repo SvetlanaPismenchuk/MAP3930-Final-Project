@@ -69,7 +69,7 @@ def test_differentiate():
 def test_integrate(): #step size, low mult num
     print("----- Testing integrate.py -----")
 
-    f = lambda x: -3*x**2 + 12*x - 9
+    f = lambda x: -3*x**2 + 12*x - 3
 
     print("Exact integral on [0,3]: 18")
     print("Left Riemann integral on [0,3]:", integ(f, 0, 3, n=100, mode=0))
